@@ -8,7 +8,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.morjodrom.gameobjects.Bird;
+import com.morjodrom.gameobjects.Grass;
+import com.morjodrom.gameobjects.Pipe;
+import com.morjodrom.gameobjects.ScrollHandler;
 import com.morjodrom.helpers.AssetLoader;
+import com.sun.xml.internal.ws.policy.AssertionSet;
 
 public class GameRenderer {
     private GameWorld world;
@@ -62,8 +66,13 @@ public class GameRenderer {
 
         spriteBatch.begin();
 
+
         spriteBatch.disableBlending();
         spriteBatch.draw(AssetLoader.bg, 0, midPointY + 23, 136, 43);
+
+        drawGrass();
+        drawPipes();
+
 
         spriteBatch.enableBlending();
 
@@ -88,6 +97,43 @@ public class GameRenderer {
         );
 
         spriteBatch.end();
+    }
+
+    private void drawPipes() {
+        Pipe[] pipes = {
+                world.getScroller().getPipe1(),
+                world.getScroller().getPipe2(),
+                world.getScroller().getPipe3()
+        };
+
+        for (Pipe pipe : pipes) {
+            spriteBatch.draw(
+                    AssetLoader.bar,
+                    pipe.getX(),
+                    pipe.getY() + pipe.getHeight() + 45,
+                    pipe.getWidth(),
+                    midPointY + 66 - (pipe.getHeight()) + 45
+            );
+        }
+    }
+
+    private void drawGrass(){
+        Grass frontGrass = world.getScroller().getFrontGrass();
+        spriteBatch.draw(
+                AssetLoader.grass,
+                frontGrass.getX(),
+                frontGrass.getY(),
+                frontGrass.getWidth(),
+                frontGrass.getHeight()
+        );
+        Grass backGrass = world.getScroller().getBackGrass();
+        spriteBatch.draw(
+                AssetLoader.grass,
+                backGrass.getX(),
+                backGrass.getY(),
+                backGrass.getWidth(),
+                backGrass.getHeight()
+        );
     }
 
 
