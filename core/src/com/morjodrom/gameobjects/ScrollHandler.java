@@ -12,9 +12,9 @@ public class ScrollHandler {
         frontGrass = new Grass(0, yPos, 143, 11, SCROLL_SPEED);
         backGrass = new Grass(frontGrass.getTailX(), yPos, 143, 11, SCROLL_SPEED);
 
-        pipe1 = new Pipe(210, 0, 22, 60, SCROLL_SPEED);
-        pipe2 = new Pipe(pipe1.getTailX() + PIPE_GAP, 0, 22, 70, SCROLL_SPEED);
-        pipe3 = new Pipe(pipe2.getTailX() + PIPE_GAP, 0, 22, 60, SCROLL_SPEED);
+        pipe1 = new Pipe(210, 0, 22, 60, SCROLL_SPEED, yPos);
+        pipe2 = new Pipe(pipe1.getTailX() + PIPE_GAP, 0, 22, 70, SCROLL_SPEED, yPos);
+        pipe3 = new Pipe(pipe2.getTailX() + PIPE_GAP, 0, 22, 60, SCROLL_SPEED, yPos);
     }
 
     public void update(float delta){
@@ -60,5 +60,26 @@ public class ScrollHandler {
 
     public Pipe getPipe3() {
         return pipe3;
+    }
+
+    public void stop() {
+        frontGrass.stop();
+        backGrass.stop();
+        pipe1.stop();
+        pipe2.stop();
+        pipe3.stop();
+    }
+
+    public Pipe[] getPipes(){
+        return new Pipe[]{pipe1, pipe2, pipe3};
+    }
+
+    public boolean collides(Bird bird){
+        for (Pipe pipe : getPipes()) {
+            if (pipe.collides(bird)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

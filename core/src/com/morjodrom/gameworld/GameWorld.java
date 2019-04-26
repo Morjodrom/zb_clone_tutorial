@@ -3,8 +3,10 @@ package com.morjodrom.gameworld;
 import com.badlogic.gdx.Gdx;
 import com.morjodrom.gameobjects.Bird;
 import com.morjodrom.gameobjects.ScrollHandler;
+import com.morjodrom.helpers.AssetLoader;
 
 import java.awt.*;
+import java.io.Console;
 
 public class GameWorld {
     private ScrollHandler scroller;
@@ -29,6 +31,18 @@ public class GameWorld {
     public void update(float delta) {
         bird.update(delta);
         scroller.update(delta);
+
+        if (scroller.collides(bird)) {
+            onCrash();
+        }
+    }
+
+    private void onCrash() {
+        if (bird.isAlive()) {
+            scroller.stop();
+            AssetLoader.crash.play();
+            bird.die();
+        }
     }
 
     public Rectangle getRect() {

@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.morjodrom.gameobjects.Bird;
-import com.morjodrom.gameobjects.Grass;
-import com.morjodrom.gameobjects.Pipe;
-import com.morjodrom.gameobjects.ScrollHandler;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Shape2D;
+import com.morjodrom.gameobjects.*;
 import com.morjodrom.helpers.AssetLoader;
 import com.sun.xml.internal.ws.policy.AssertionSet;
 
@@ -64,14 +64,12 @@ public class GameRenderer {
         shapeRenderer.end();
 
 
+
         spriteBatch.begin();
-
-
         spriteBatch.disableBlending();
         spriteBatch.draw(AssetLoader.bg, 0, midPointY + 23, 136, 43);
 
         drawGrass();
-        drawPipes();
 
 
         spriteBatch.enableBlending();
@@ -83,6 +81,12 @@ public class GameRenderer {
         else {
             birdTexture = (TextureRegion) AssetLoader.birdAnimation.getKeyFrame(runTime);
         }
+        spriteBatch.end();
+
+        drawPipes();
+
+        spriteBatch.begin();
+
         spriteBatch.draw(
                 birdTexture,
                 bird.getX(),
@@ -97,9 +101,32 @@ public class GameRenderer {
         );
 
         spriteBatch.end();
+
+        drawCollisions(bird.getCollisionArea());
+    }
+
+    private void drawCollisions(Shape2D collidable){
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1f,0f,0f, .3f);
+
+        if (collidable instanceof Circle) {
+            Circle collisionArea = (Circle) collidable;
+            shapeRenderer.circle(
+                    collisionArea.x,
+                    collisionArea.y,
+                    collisionArea.radius
+            );
+        }
+        if (collidable instanceof Rectangle) {
+            Rectangle collisionArea = (Rectangle) collidable;
+            shapeRenderer.rect(collisionArea.x, collisionArea.y, collisionArea.width, collisionArea.height);
+        }
+
+        shapeRenderer.end();
     }
 
     private void drawPipes() {
+
         Pipe[] pipes = {
                 world.getScroller().getPipe1(),
                 world.getScroller().getPipe2(),
@@ -110,6 +137,7 @@ public class GameRenderer {
 
         for (Pipe pipe : pipes) {
             float bottomPipeY = pipe.getY() + pipe.getHeight() + 45;
+            spriteBatch.begin();
             spriteBatch.draw(
                     AssetLoader.bar,
                     pipe.getX(),
@@ -136,11 +164,19 @@ public class GameRenderer {
             spriteBatch.draw(
                     AssetLoader.skullUp,
                     pipe.getX() - skullOffset,
-                    pipe.getY() + pipe.getHeight(),
+                    pipe.getY() + pipe.getHeight() - AssetLoader.skullUp.getRegionHeight(),
                     AssetLoader.skullUp.getRegionWidth(),
                     AssetLoader.skullUp.getRegionHeight()
             );
+
+            spriteBatch.end();
+
+            drawCollisions(pipe.getBarDown());
+            drawCollisions(pipe.getBarUp());
+            drawCollisions(pipe.getSkullDown());
+            drawCollisions(pipe.getSkullUp());
         }
+
     }
 
     private void drawGrass(){

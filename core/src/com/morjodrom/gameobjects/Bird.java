@@ -1,8 +1,15 @@
 package com.morjodrom.gameobjects;
 
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bird {
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    private boolean isAlive = true;
+
     private Vector2 position;
     private Vector2 velocity;
     private Vector2 acceleration;
@@ -11,15 +18,26 @@ public class Bird {
     private int width;
     private int height;
 
+    public Circle getCollisionArea() {
+        return collisionArea;
+    }
+
+    private Circle collisionArea;
+
     public Bird(float x, float y, int width, int height) {
         this.width = width;
         this.height = height;
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
         acceleration = new Vector2(0, 460);
+
+        collisionArea = new Circle();
     }
 
     public void update(float delta){
+        if (!isAlive) {
+            return;
+        }
         velocity.add(acceleration.cpy().scl(delta));
 
         if(velocity.y > 200){
@@ -37,6 +55,7 @@ public class Bird {
         }
 
         position.add(velocity.cpy().scl(delta));
+        collisionArea.set(position.x + 9, position.y + 6, 6.5f);
 
         if(position.y > 200){
             position.y = 200;
@@ -73,5 +92,9 @@ public class Bird {
 
     public boolean shouldStopFlap(){
         return velocity.y > 70;
+    }
+
+    public void die(){
+        this.isAlive = false;
     }
 }

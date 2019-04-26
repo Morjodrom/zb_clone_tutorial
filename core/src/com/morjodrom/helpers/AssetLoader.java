@@ -1,6 +1,7 @@
 package com.morjodrom.helpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,6 +14,10 @@ public class AssetLoader {
     public static TextureRegion bird, birdDown, birdUp;
 
     public static TextureRegion skullUp, skullDown, bar;
+
+    public static Sound crash = Gdx.audio.newSound(Gdx.files.internal("sounds/Crash.wav"));
+    public static Sound flap = Gdx.audio.newSound(Gdx.files.internal("sounds/Flap.wav"));
+    public static Sound coin = Gdx.audio.newSound(Gdx.files.internal("sounds/Pickup_Coin.wav"));
 
     public static void load(){
         texture = new Texture(Gdx.files.internal("data/texture.png"));
@@ -48,5 +53,8 @@ public class AssetLoader {
 
     public static void dispose(){
         texture.dispose();
+        crash.dispose();
+        flap.dispose();
+        coin.dispose();
     }
 }
