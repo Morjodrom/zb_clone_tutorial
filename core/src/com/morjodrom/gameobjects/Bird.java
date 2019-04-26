@@ -91,7 +91,7 @@ public class Bird {
     }
 
     public boolean shouldStopFlap(){
-        return velocity.y > 70;
+        return velocity.y > 70 || !isAlive;
     }
 
     public void die(){

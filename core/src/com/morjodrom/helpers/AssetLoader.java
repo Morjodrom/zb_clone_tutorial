@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
@@ -18,6 +19,8 @@ public class AssetLoader {
     public static Sound crash = Gdx.audio.newSound(Gdx.files.internal("sounds/Crash.wav"));
     public static Sound flap = Gdx.audio.newSound(Gdx.files.internal("sounds/Flap.wav"));
     public static Sound coin = Gdx.audio.newSound(Gdx.files.internal("sounds/Pickup_Coin.wav"));
+
+    public static BitmapFont font, shadow;
 
     public static void load(){
         texture = new Texture(Gdx.files.internal("data/texture.png"));
@@ -49,6 +52,11 @@ public class AssetLoader {
 
         bar = new TextureRegion(texture, 136, 16, 22, 3);
         bar.flip(false, true);
+
+        font = new BitmapFont(Gdx.files.internal("data/fonts/text.fnt"));
+        font.getData().setScale(.25f, -.25f);
+        font = new BitmapFont(Gdx.files.internal("data/fonts/shadow.fnt"));
+        font.getData().setScale(.25f, -.25f);
     }
 
     public static void dispose(){
@@ -57,4 +65,6 @@ public class AssetLoader {
         flap.dispose();
         coin.dispose();
     }
+
+
 }

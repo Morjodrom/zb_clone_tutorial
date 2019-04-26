@@ -32,7 +32,8 @@ public class GameWorld {
         bird.update(delta);
         scroller.update(delta);
 
-        if (scroller.collides(bird)) {
+        boolean isHitTheGround = bird.getY() + bird.getHeight() > scroller.getFrontGrass().getY();
+        if (scroller.collides(bird) || isHitTheGround) {
             onCrash();
         }
     }
