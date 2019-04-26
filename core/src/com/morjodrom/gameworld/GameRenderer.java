@@ -106,13 +106,39 @@ public class GameRenderer {
                 world.getScroller().getPipe3()
         };
 
+        int skullOffset = (AssetLoader.skullDown.getRegionWidth() - AssetLoader.bar.getRegionWidth()) / 2;
+
         for (Pipe pipe : pipes) {
+            float bottomPipeY = pipe.getY() + pipe.getHeight() + 45;
             spriteBatch.draw(
                     AssetLoader.bar,
                     pipe.getX(),
-                    pipe.getY() + pipe.getHeight() + 45,
+                    bottomPipeY,
                     pipe.getWidth(),
                     midPointY + 66 - (pipe.getHeight()) + 45
+            );
+            spriteBatch.draw(
+                    AssetLoader.skullDown,
+                    pipe.getX() - skullOffset,
+                    bottomPipeY,
+                    AssetLoader.skullDown.getRegionWidth(),
+                    AssetLoader.skullDown.getRegionHeight()
+            );
+
+            spriteBatch.draw(
+                    AssetLoader.bar,
+                    pipe.getX(),
+                    pipe.getY(),
+                    pipe.getWidth(),
+                    pipe.getHeight()
+            );
+
+            spriteBatch.draw(
+                    AssetLoader.skullUp,
+                    pipe.getX() - skullOffset,
+                    pipe.getY() + pipe.getHeight(),
+                    AssetLoader.skullUp.getRegionWidth(),
+                    AssetLoader.skullUp.getRegionHeight()
             );
         }
     }
