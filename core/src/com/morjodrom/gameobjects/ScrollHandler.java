@@ -1,5 +1,7 @@
 package com.morjodrom.gameobjects;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 public class ScrollHandler {
     private Grass frontGrass, backGrass;
 
@@ -32,7 +34,7 @@ public class ScrollHandler {
             pipe3.reset(pipe2.getTailX() + PIPE_GAP);
         }
 
-        // то-же самое с травой
+
         if (frontGrass.isScrolledLeft()) {
             frontGrass.reset(backGrass.getTailX());
 
@@ -74,11 +76,25 @@ public class ScrollHandler {
         return new Pipe[]{pipe1, pipe2, pipe3};
     }
 
-    public boolean collides(Bird bird){
+    public boolean passes(Bird bird) {
+        float birdPassBorder = bird.getX() + bird.getWidth();
         for (Pipe pipe : getPipes()) {
-            if (pipe.collides(bird)) {
+            float pipePassBorder = pipe.getX() + (float) pipe.getWidth() / 2;
+            if (!pipe.checkIsScored() && birdPassBorder > pipePassBorder) {
+                pipe.markAsPassed();
+                // can pass only one pipe
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean collides(Bird bird){
+        for (Pipe pipe : getPipes()) {
+            return false;
+//            if (pipe.collides(bird)) {
+//                return true;
+//            }
         }
         return false;
     }

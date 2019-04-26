@@ -2,8 +2,18 @@ package com.morjodrom.gameobjects;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.morjodrom.helpers.AssetLoader;
 
 public class Bird {
+    private static final int GRAVITY = 300;
+    private static final int FALLING_MAX = 200;
+    private static final int ROTATION_RATIO = 600;
+    private static final int MAX_FLY_ROTATION = -20;
+    private static final int FALLING_ROTATION = 90;
+    private static final int FLY_ACCELERATION = 90;
+    private static final int FALLING_SPEED = 110;
+    private static final int NO_FLAP_FALLING_SPEED = 70;
+
     public boolean isAlive() {
         return isAlive;
     }
@@ -29,9 +39,9 @@ public class Bird {
         this.height = height;
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
-        acceleration = new Vector2(0, 460);
+        acceleration = new Vector2(0, GRAVITY);
 
-        collisionArea = new Circle();
+        collisionArea = new Circle(position, Math.min(width, height) / 2);
     }
 
     public void update(float delta){
@@ -40,30 +50,31 @@ public class Bird {
         }
         velocity.add(acceleration.cpy().scl(delta));
 
-        if(velocity.y > 200){
-            velocity.y = 200;
+        if(velocity.y > FALLING_MAX){
+            velocity.y = FALLING_MAX;
         }
 
         if(velocity.y < 0){
-            rotation -= 600 * delta;
-            rotation = Math.max(rotation, -20);
+            rotation -= ROTATION_RATIO * delta;
+            rotation = Math.max(rotation, MAX_FLY_ROTATION);
         }
 
         if (isFalling()) {
             rotation += 480 * delta;
-            rotation = Math.min(rotation, 90);
+            rotation = Math.min(rotation, FALLING_ROTATION);
         }
 
         position.add(velocity.cpy().scl(delta));
-        collisionArea.set(position.x + 9, position.y + 6, 6.5f);
+        collisionArea.setPosition(position.x + (float) width / 2, position.y + collisionArea.radius);
 
-        if(position.y > 200){
-            position.y = 200;
+        if(position.y > FALLING_MAX){
+            position.y = FALLING_MAX;
         }
     }
 
     public void onClick(){
-        velocity.y = -140;
+        velocity.y = -FLY_ACCELERATION;
+        AssetLoader.flap.play();
     }
 
     public float getX(){
@@ -87,11 +98,11 @@ public class Bird {
     }
 
     public boolean isFalling(){
-        return velocity.y > 110;
+        return velocity.y > FALLING_SPEED;
     }
 
     public boolean shouldStopFlap(){
-        return velocity.y > 70 || !isAlive;
+        return velocity.y > NO_FLAP_FALLING_SPEED || !isAlive;
     }
 
     public void die(){

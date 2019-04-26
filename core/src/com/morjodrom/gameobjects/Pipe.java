@@ -7,9 +7,17 @@ import com.morjodrom.helpers.AssetLoader;
 import java.util.Random;
 
 public class Pipe extends Scrollable {
-    public static final int VERTICAL_GAP = 45;
+    public static final int VERTICAL_GAP = 60;
     public static final int SKULL_WIDTH = AssetLoader.skullDown.getRegionWidth();
     public static final int SKULL_HEIGHT = AssetLoader.skullDown.getRegionHeight();
+
+    private boolean isScored = false;
+
+
+
+    public boolean checkIsScored(){
+        return isScored;
+    }
 
     private float groundY;
     private Random r;
@@ -49,6 +57,11 @@ public class Pipe extends Scrollable {
     public void reset(float newX) {
         super.reset(newX);
         height = r.nextInt(90) + 15;
+        isScored = false;
+    }
+
+    public void markAsPassed(){
+        this.isScored = true;
     }
 
     @Override

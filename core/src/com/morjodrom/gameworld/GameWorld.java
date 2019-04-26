@@ -9,6 +9,19 @@ import java.awt.*;
 import java.io.Console;
 
 public class GameWorld {
+    private int score = 0;
+
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(int increment){
+        this.score += increment;
+        Gdx.app.log("Score", Integer.toString(this.score));
+        AssetLoader.coin.play();
+    }
+
+
     private ScrollHandler scroller;
     private Rectangle rect = new Rectangle(0, 0, 17, 12);
 
@@ -35,6 +48,9 @@ public class GameWorld {
         boolean isHitTheGround = bird.getY() + bird.getHeight() > scroller.getFrontGrass().getY();
         if (scroller.collides(bird) || isHitTheGround) {
             onCrash();
+        }
+        if (scroller.passes(bird)) {
+            addScore(1);
         }
     }
 

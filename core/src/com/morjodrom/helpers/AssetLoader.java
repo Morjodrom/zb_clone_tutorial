@@ -55,8 +55,8 @@ public class AssetLoader {
 
         font = new BitmapFont(Gdx.files.internal("data/fonts/text.fnt"));
         font.getData().setScale(.25f, -.25f);
-        font = new BitmapFont(Gdx.files.internal("data/fonts/shadow.fnt"));
-        font.getData().setScale(.25f, -.25f);
+        shadow = new BitmapFont(Gdx.files.internal("data/fonts/shadow.fnt"));
+        shadow.getData().setScale(.25f, -.25f);
     }
 
     public static void dispose(){

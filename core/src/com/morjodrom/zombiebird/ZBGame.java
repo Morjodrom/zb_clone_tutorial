@@ -2,8 +2,6 @@ package com.morjodrom.zombiebird;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.morjodrom.gameworld.GameRenderer;
-import com.morjodrom.gameworld.GameWorld;
 import com.morjodrom.helpers.AssetLoader;
 import com.morjodrom.screens.GameScreen;
 

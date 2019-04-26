@@ -100,9 +100,16 @@ public class GameRenderer {
                 bird.getRotation()
         );
 
+        drawScore();
+
         spriteBatch.end();
 
         drawCollisions(bird.getCollisionArea());
+    }
+
+    private void drawScore() {
+        AssetLoader.shadow.draw(spriteBatch, world.getScore() + "", 10, 10);
+        AssetLoader.font.draw(spriteBatch, world.getScore() + "", 10, 10);
     }
 
     private void drawCollisions(Shape2D collidable){
@@ -126,24 +133,19 @@ public class GameRenderer {
     }
 
     private void drawPipes() {
-
-        Pipe[] pipes = {
-                world.getScroller().getPipe1(),
-                world.getScroller().getPipe2(),
-                world.getScroller().getPipe3()
-        };
+        Pipe[] pipes = world.getScroller().getPipes();
 
         int skullOffset = (AssetLoader.skullDown.getRegionWidth() - AssetLoader.bar.getRegionWidth()) / 2;
 
         for (Pipe pipe : pipes) {
-            float bottomPipeY = pipe.getY() + pipe.getHeight() + 45;
+            float bottomPipeY = pipe.getY() + pipe.getHeight() + Pipe.VERTICAL_GAP;
             spriteBatch.begin();
             spriteBatch.draw(
                     AssetLoader.bar,
                     pipe.getX(),
                     bottomPipeY,
                     pipe.getWidth(),
-                    midPointY + 66 - (pipe.getHeight()) + 45
+                    midPointY + 66 - (pipe.getHeight()) + Pipe.VERTICAL_GAP
             );
             spriteBatch.draw(
                     AssetLoader.skullDown,
