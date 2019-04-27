@@ -55,7 +55,7 @@ public class Pipe extends Scrollable {
 
     @Override
     public void reset(float newX) {
-        super.reset(newX);
+        super.reset(newX + r.nextInt(15));
         height = r.nextInt(90) + 15;
         isScored = false;
     }
