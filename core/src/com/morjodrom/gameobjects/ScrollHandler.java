@@ -1,6 +1,6 @@
 package com.morjodrom.gameobjects;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.MathUtils;
 
 public class ScrollHandler {
     private Grass frontGrass, backGrass;
@@ -19,12 +19,13 @@ public class ScrollHandler {
         pipe3 = new Pipe(pipe2.getTailX() + PIPE_GAP, 0, 22, 60, SCROLL_SPEED, yPos);
     }
 
-    public void update(float delta){
-        frontGrass.update(delta);
-        backGrass.update(delta);
-        pipe1.update(delta);
-        pipe2.update(delta);
-        pipe3.update(delta);
+    public void update(float delta, float speed){
+        float deltaNormalized = MathUtils.lerp(delta, delta * speed, .5f);
+        frontGrass.update(deltaNormalized);
+        backGrass.update(deltaNormalized);
+        pipe1.update(deltaNormalized);
+        pipe2.update(deltaNormalized);
+        pipe3.update(deltaNormalized);
 
         if (pipe1.isScrolledLeft()) {
             pipe1.reset(pipe3.getTailX() + PIPE_GAP);

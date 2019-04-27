@@ -1,13 +1,14 @@
 package com.morjodrom.helpers;
 
 import com.badlogic.gdx.InputProcessor;
-import com.morjodrom.gameobjects.Bird;
+import com.morjodrom.gameworld.GameWorld;
 
 public class InputHandler implements InputProcessor {
-    private Bird bird;
 
-    public InputHandler(Bird bird) {
-        this.bird = bird;
+    private GameWorld gameWorld;
+
+    public InputHandler(GameWorld world) {
+        this.gameWorld = world;
     }
 
     @Override
@@ -27,7 +28,16 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        bird.onClick();
+        if (gameWorld.isReady()) {
+            gameWorld.start();
+        }
+
+        if (gameWorld.isGameOver()) {
+            gameWorld.restart();
+        }
+
+
+        this.gameWorld.getBird().onClick();
         return true;
     }
 

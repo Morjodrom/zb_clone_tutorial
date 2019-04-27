@@ -1,9 +1,7 @@
 package com.morjodrom.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.morjodrom.gameworld.GameRenderer;
 import com.morjodrom.gameworld.GameWorld;
 import com.morjodrom.helpers.InputHandler;
@@ -26,7 +24,7 @@ public class GameScreen implements Screen {
         world = new GameWorld(midPointY);
         renderer = new GameRenderer(world, gameHeight, midPointY);
 
-        Gdx.input.setInputProcessor(new InputHandler(world.getBird()));
+        Gdx.input.setInputProcessor(new InputHandler(world));
     }
 
     @Override

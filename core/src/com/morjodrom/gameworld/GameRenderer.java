@@ -3,16 +3,17 @@ package com.morjodrom.gameworld;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Shape2D;
-import com.morjodrom.gameobjects.*;
+import com.badlogic.gdx.math.Vector2;
+import com.morjodrom.gameobjects.Bird;
+import com.morjodrom.gameobjects.Grass;
+import com.morjodrom.gameobjects.Pipe;
 import com.morjodrom.helpers.AssetLoader;
-import com.sun.xml.internal.ws.policy.AssertionSet;
 
 public class GameRenderer {
     private GameWorld world;
@@ -63,11 +64,20 @@ public class GameRenderer {
 
         shapeRenderer.end();
 
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.line(
+                bird.getPosition(),
+                bird.getPosition().cpy().add(new Vector2(10, 0).rotate(bird.getRotation()))
+        );
+        shapeRenderer.end();
+
 
 
         spriteBatch.begin();
         spriteBatch.disableBlending();
-        spriteBatch.draw(AssetLoader.bg, 0, midPointY + 23, 136, 43);
+        float bgOffset = bird.isAlive() ? runTime * 7 % 136 : 0;
+        spriteBatch.draw(AssetLoader.bg, -bgOffset, midPointY + 23, 136, 43);
+        spriteBatch.draw(AssetLoader.bg, 136 - bgOffset, midPointY + 23, 136, 43);
 
         drawGrass();
 
@@ -105,11 +115,28 @@ public class GameRenderer {
         spriteBatch.end();
 
         drawCollisions(bird.getCollisionArea());
+
+        if (world.isReady()) {
+            spriteBatch.begin();
+            print("Touch me", (136 / 2) - 42, 76);
+            spriteBatch.end();
+        } else if (world.isGameOver()) {
+            spriteBatch.begin();
+            print("Game Over", 25, 56);
+            print("Try Again", 24, 75);
+            spriteBatch.end();
+        }
     }
 
     private void drawScore() {
         AssetLoader.shadow.draw(spriteBatch, world.getScore() + "", 10, 10);
         AssetLoader.font.draw(spriteBatch, world.getScore() + "", 10, 10);
+        print(world.getScore() + "", 10, 10);
+    }
+
+    private void print(String string, float x, float y){
+        AssetLoader.shadow.draw(spriteBatch, string, x, y);
+        AssetLoader.font.draw(spriteBatch, string, x, y);
     }
 
     private void drawCollisions(Shape2D collidable){

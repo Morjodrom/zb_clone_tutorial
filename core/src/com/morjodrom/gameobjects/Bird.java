@@ -8,7 +8,7 @@ public class Bird {
     private static final int GRAVITY = 300;
     private static final int FALLING_MAX = 200;
     private static final int ROTATION_RATIO = 600;
-    private static final int MAX_FLY_ROTATION = -20;
+    private static final int MAX_FLY_ROTATION = -30;
     private static final int FALLING_ROTATION = 90;
     private static final int FLY_ACCELERATION = 90;
     private static final int FALLING_SPEED = 110;
@@ -26,6 +26,15 @@ public class Bird {
 
     private float rotation;
     private int width;
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public Vector2 getAcceleration() {
+        return acceleration;
+    }
+
     private int height;
 
     public Circle getCollisionArea() {
@@ -50,6 +59,7 @@ public class Bird {
         }
         velocity.add(acceleration.cpy().scl(delta));
 
+
         if(velocity.y > FALLING_MAX){
             velocity.y = FALLING_MAX;
         }
@@ -64,7 +74,12 @@ public class Bird {
             rotation = Math.min(rotation, FALLING_ROTATION);
         }
 
+
         position.add(velocity.cpy().scl(delta));
+        if(position.y < 0){
+            position.y = 0;
+        }
+
         collisionArea.setPosition(position.x + (float) width / 2, position.y + collisionArea.radius);
 
         if(position.y > FALLING_MAX){
@@ -73,6 +88,9 @@ public class Bird {
     }
 
     public void onClick(){
+        if (!isAlive) {
+            return;
+        }
         velocity.y = -FLY_ACCELERATION;
         AssetLoader.flap.play();
     }
@@ -107,5 +125,9 @@ public class Bird {
 
     public void die(){
         this.isAlive = false;
+    }
+
+    public Vector2 getVelocity() {
+        return velocity;
     }
 }
