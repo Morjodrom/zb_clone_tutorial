@@ -7,12 +7,17 @@ import com.morjodrom.helpers.AssetLoader;
 import java.util.Random;
 
 public class Pipe extends Scrollable {
-    public static final int VERTICAL_GAP = 60;
-    public static final int SKULL_WIDTH = AssetLoader.skullDown.getRegionWidth();
-    public static final int SKULL_HEIGHT = AssetLoader.skullDown.getRegionHeight();
+    private static final int VERTICAL_GAP = 50;
+    private static final int SKULL_WIDTH = AssetLoader.skullDown.getRegionWidth();
+    private static final int SKULL_HEIGHT = AssetLoader.skullDown.getRegionHeight();
 
     private boolean isScored = false;
 
+    public int getVerticalGap() {
+        return verticalGap;
+    }
+
+    private int verticalGap = VERTICAL_GAP;
 
 
     public boolean checkIsScored(){
@@ -57,6 +62,7 @@ public class Pipe extends Scrollable {
     public void reset(float newX) {
         super.reset(newX + r.nextInt(15));
         height = r.nextInt(90) + 15;
+        verticalGap = VERTICAL_GAP + r.nextInt(10);
         isScored = false;
     }
 
@@ -71,9 +77,9 @@ public class Pipe extends Scrollable {
         barUp.set(position.x, position.y, width, height);
         barDown.set(
                 position.x,
-                position.y + height + VERTICAL_GAP,
+                position.y + height + verticalGap,
                 width,
-                groundY - (position.y + height + VERTICAL_GAP)
+                groundY - (position.y + height + verticalGap)
         );
 
         int skullOffset = (SKULL_WIDTH - width) / 2;

@@ -165,14 +165,14 @@ public class GameRenderer {
         int skullOffset = (AssetLoader.skullDown.getRegionWidth() - AssetLoader.bar.getRegionWidth()) / 2;
 
         for (Pipe pipe : pipes) {
-            float bottomPipeY = pipe.getY() + pipe.getHeight() + Pipe.VERTICAL_GAP;
+            float bottomPipeY = pipe.getY() + pipe.getHeight() + pipe.getVerticalGap();
             spriteBatch.begin();
             spriteBatch.draw(
                     AssetLoader.bar,
                     pipe.getX(),
                     bottomPipeY,
                     pipe.getWidth(),
-                    midPointY + 66 - (pipe.getHeight()) + Pipe.VERTICAL_GAP
+                    midPointY + 66 - (pipe.getHeight()) + pipe.getVerticalGap()
             );
             spriteBatch.draw(
                     AssetLoader.skullDown,

@@ -5,34 +5,34 @@ import com.badlogic.gdx.math.Vector2;
 import com.morjodrom.helpers.AssetLoader;
 
 public class Bird {
-    private static final int GRAVITY = 300;
-    private static final int FALLING_MAX = 200;
-    private static final int ROTATION_RATIO = 600;
-    private static final int MAX_FLY_ROTATION = -30;
-    private static final int FALLING_ROTATION = 90;
-    private static final int FLY_ACCELERATION = 90;
-    private static final int FALLING_SPEED = 110;
-    private static final int NO_FLAP_FALLING_SPEED = 70;
+    protected static final int GRAVITY = 300;
+    protected static final int FALLING_MAX = 200;
+    protected static final int ROTATION_RATIO = 600;
+    protected static final int MAX_FLY_ROTATION = -30;
+    protected static final int FALLING_ROTATION = 90;
+    protected static final int FLY_ACCELERATION = 90;
+    protected static final int FALLING_SPEED = 110;
+    protected static final int NO_FLAP_FALLING_SPEED = 70;
 
     public boolean isAlive() {
         return isAlive;
     }
 
-    private boolean isAlive = true;
+    protected boolean isAlive = true;
 
-    private Vector2 position;
-    private Vector2 velocity;
-    private Vector2 acceleration;
+    protected Vector2 position;
+    protected Vector2 velocity;
+    protected Vector2 gravity;
 
     private float rotation;
-    private int width;
+    protected int width;
 
     public Vector2 getPosition() {
         return position;
     }
 
-    public Vector2 getAcceleration() {
-        return acceleration;
+    public Vector2 getGravity() {
+        return gravity;
     }
 
     private int height;
@@ -41,14 +41,14 @@ public class Bird {
         return collisionArea;
     }
 
-    private Circle collisionArea;
+    protected Circle collisionArea;
 
     public Bird(float x, float y, int width, int height) {
         this.width = width;
         this.height = height;
         position = new Vector2(x, y);
         velocity = new Vector2(0, 0);
-        acceleration = new Vector2(0, GRAVITY);
+        gravity = new Vector2(0, GRAVITY);
 
         collisionArea = new Circle(position, Math.min(width, height) / 2);
     }
@@ -57,7 +57,7 @@ public class Bird {
         if (!isAlive) {
             return;
         }
-        velocity.add(acceleration.cpy().scl(delta));
+        velocity.add(gravity.cpy().scl(delta));
 
 
         if(velocity.y > FALLING_MAX){

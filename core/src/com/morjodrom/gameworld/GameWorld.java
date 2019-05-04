@@ -3,6 +3,7 @@ package com.morjodrom.gameworld;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.morjodrom.gameobjects.Bird;
+import com.morjodrom.gameobjects.GlidingBird;
 import com.morjodrom.gameobjects.ScrollHandler;
 import com.morjodrom.helpers.AssetLoader;
 
@@ -35,7 +36,7 @@ public class GameWorld {
     public void addScore(int increment){
         this.score += increment;
         Gdx.app.log("Score", Integer.toString(this.score));
-        AssetLoader.coin.play();
+//        AssetLoader.coin.play();
     }
 
 
@@ -60,7 +61,9 @@ public class GameWorld {
     }
 
     private Bird createBird(int midPointY) {
-        return new Bird(33, midPointY - 5, 17, 12);
+        //return new Bird(33, midPointY - 5, 17, 12);
+        return new GlidingBird(33, midPointY - 5, 17, 12);
+
     }
 
     public ScrollHandler getScroller() {
@@ -90,14 +93,13 @@ public class GameWorld {
         Vector2 direction = new Vector2(1, 0);
         direction.rotate(bird.getRotation());
         float speed = Math.round(direction.len() * Math.cos(direction.angleRad()) * 1000) / 1000f;
-        Gdx.app.log("Speed", speed + "");
 
         scroller.update(delta, speed);
 
         boolean isHitTheGround = bird.getY() + bird.getHeight() > scroller.getFrontGrass().getY();
         if (scroller.collides(bird) || isHitTheGround) {
-            onCrash();
-            currentState = GameState.GAMEOVER;
+//            onCrash();
+//            currentState = GameState.GAMEOVER;
         }
         if (scroller.passes(bird)) {
             addScore(1);

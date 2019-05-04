@@ -92,10 +92,9 @@ public class ScrollHandler {
 
     public boolean collides(Bird bird){
         for (Pipe pipe : getPipes()) {
-            return false;
-//            if (pipe.collides(bird)) {
-//                return true;
-//            }
+            if (pipe.collides(bird)) {
+                return true;
+            }
         }
         return false;
     }
